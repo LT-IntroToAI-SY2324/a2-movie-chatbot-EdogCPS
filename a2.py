@@ -21,11 +21,10 @@ def match(pattern: List[str], source: List[str]) -> List[str]:
     # keep checking as long as we haven't hit the end of either pattern or source while
     # pind is still a valid index OR sind is still a valid index (valid index means that
     # the index is != to the length of the list)
-    while "FILL IN CONDITION HERE":
+    # while "FILL IN CONDITION HERE":
         # your job is to fill out the body of this loop
 
         # you should delete the following line
-        return ["Not done yet :)"]
 
         # 1) if we reached the end of the pattern but not source
 
@@ -44,7 +43,30 @@ def match(pattern: List[str], source: List[str]) -> List[str]:
         # 6) else : this will happen if none of the other conditions are met it
         # indicates the current thing it pattern doesn't match the current thing in
         # source
-
+    x = 0
+    i = x
+    k = 0
+    j = None
+    open = False
+    while (x < len(pattern) and i < len(source)):
+        if (not pattern[x] == source[i]):
+            if (pattern[x] == "%"):
+                if (open == False):
+                    result.add(source[i])
+                    open = True
+                    j = i
+                    k += 1 
+                else:
+                    result[k] = source[j]
+            elif (pattern[x] == "_"):
+                result.add(source[i])
+                x += 1
+            else:
+                return None
+        else:
+            x += 1
+            if  ()
+        i += 1
     return result
 
 
