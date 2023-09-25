@@ -44,68 +44,64 @@ def match(pattern: List[str], source: List[str]) -> List[str]:
         # indicates the current thing it pattern doesn't match the current thing in
         # source
     x = 0
-    i = x
-    k = -1
-    past = 0
-    open = False
+    i = 0
 
-
+# Final program. ChatBot assisted
     while (x < len(pattern) and i < len(source)):
-        if (not pattern[x] == source[i]):
-            if (pattern[x] == "%"):
-                if (open == False):
-                    result.append(source[i])
-                    print(result)
-                    open = True
-                    k += 1 
-                    # i += 1
-                else:
-                    result[k] += " "
-                    result[k] += source[i]
-                    # result[k]
-                    past += 1
-                    print(result)
-                # need to close the open status if it shoudl be closed
-            elif (pattern[x] == "_"):
-                result.append(source[i])
-                x += 1
-                k += 1
-                print(result)
+        if (pattern[x] == "%"):
+            matched_words = []
+            if (x+1 == len(pattern)):
+                while (i < len(source)):
+                    matched_words.append(source[i])
+                    i += 1
+                    # print(matched_words)
+                result.append(" ".join(matched_words))
+                # print(result)
             else:
-                return None
+                while ( not source[i] == pattern[x+1]):
+                    matched_words.append(source[i])
+                    i += 1
+                result.append(" ".join(matched_words))
+        elif (pattern[x] == "_"):
+            result.append(source[i])
+            i += 1
+        elif (pattern[x] == source[i]):
+            i += 1
         else:
-            x += 1
-            if (open == True):
-                open = False
-        i += 1
-    if (not len(pattern) == len(source) - past):
+            return None
+        x += 1
+    if (x == len(pattern) and i == len(source)):
+        return result
+    elif (x < len(pattern)):
+        if (pattern[x] == "%" or pattern[x] == "_"):
+            result.append("")
+            return result
+    else:
         return None
-    print(result)
-    return result
+
+
+
 
 
 if __name__ == "__main__":
-    # assert match(["x", "y", "z"], ["x", "y", "z"]) == [], "test 1 failed"
-    # assert match(["x", "z", "z"], ["x", "y", "z"]) == None, "test 2 failed"
-    # assert match(["x", "y"], ["x", "y", "z"]) == None, "test 3 failed"
-    # assert match(["x", "y", "z", "z"], ["x", "y", "z"]) == None, "test 4 failed"
-    # assert match(["x", "_", "z"], ["x", "y", "z"]) == ["y"], "test 5 failed"
-    # assert match(["x", "_", "_"], ["x", "y", "z"]) == ["y", "z"], "test 6 failed"
-    # assert match(["%"], ["x", "y", "z"]) == ["x y z"], "test 7 failed"
+    assert match(["x", "y", "z"], ["x", "y", "z"]) == [], "test 1 failed"
+    assert match(["x", "z", "z"], ["x", "y", "z"]) == None, "test 2 failed"
+    assert match(["x", "y"], ["x", "y", "z"]) == None, "test 3 failed"
+    assert match(["x", "y", "z", "z"], ["x", "y", "z"]) == None, "test 4 failed"
+    assert match(["x", "_", "z"], ["x", "y", "z"]) == ["y"], "test 5 failed"
+    assert match(["x", "_", "_"], ["x", "y", "z"]) == ["y", "z"], "test 6 failed"
+    assert match(["%"], ["x", "y", "z"]) == ["x y z"], "test 7 failed"
     assert match(["x", "%", "z"], ["x", "y", "z"]) == ["y"], "test 8 failed"
-    # assert match(["%", "z"], ["x", "y", "z"]) == ["x y"], "test 9 failed"
-    # assert match(["x", "%", "y"], ["x", "y", "z"]) == None, "test 10 failed"
-    # assert match(["x", "%", "y", "z"], ["x", "y", "z"]) == [""], "test 11 failed"
-    # assert match(["x", "y", "z", "%"], ["x", "y", "z"]) == [""], "test 12 failed"
-    # assert match(["_", "%"], ["x", "y", "z"]) == ["x", "y z"], "test 13 failed"
-    # assert match(["_", "_", "_", "%"], ["x", "y", "z"]) == [
-    #     "x",
-    #     "y",
-    #     "z",
-    #     "",
-    # ], "test 14 failed"
-    # # this last case is a strange one, but it exposes an issue with the way we've
-    # # written our match function
-    # assert match(["x", "%", "z"], ["x", "y", "z", "z", "z"]) == None, "test 15 failed"
+    assert match(["%", "z"], ["x", "y", "z"]) == ["x y"], "test 9 failed"
+    assert match(["x", "%", "y"], ["x", "y", "z"]) == None, "test 10 failed"
+    # print("WOAH")
+    assert match(["x", "%", "y", "z"], ["x", "y", "z"]) == [""], "test 11 failed"
+    # print("WOAH")
+    assert match(["x", "y", "z", "%"], ["x", "y", "z"]) == [""], "test 12 failed"
+    assert match(["_", "%"], ["x", "y", "z"]) == ["x", "y z"], "test 13 failed"
+    assert match(["_", "_", "_", "%"], ["x", "y", "z"]) == ["x", "y", "z", "",], "test 14 failed"
+    # this last case is a strange one, but it exposes an issue with the way we've
+    # written our match function
+    assert match(["x", "%", "z"], ["x", "y", "z", "z", "z"]) == None, "test 15 failed"
 
-    # print("All tests passed!")
+    print("All tests passed!")
